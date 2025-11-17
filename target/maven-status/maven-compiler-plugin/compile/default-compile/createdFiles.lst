@@ -1,0 +1,14 @@
+com\example\springssodemo\config\SecurityConfig.class
+com\example\springssodemo\controller\LoginController.class
+com\example\springssodemo\controller\SsoRedirectController.class
+com\example\springssodemo\controller\UserController.class
+com\example\springssodemo\repo\UserRepository.class
+com\example\springssodemo\service\UserService.class
+com\example\springssodemo\service\CustomUserDetailsService.class
+com\example\springssodemo\controller\HomeController.class
+com\example\springssodemo\SpringSsoJwtDemoApplication.class
+com\example\springssodemo\config\SamlConfig.class
+com\example\springssodemo\controller\AdminController.class
+com\example\springssodemo\controller\AuthController.class
+com\example\springssodemo\model\User.class
+com\example\springssodemo\controller\SsoController.class

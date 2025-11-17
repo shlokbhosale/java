@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Login</title>
+    <style>
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        body {
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+          background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+          padding: 20px;
+          position: relative;
+          overflow: hidden;
+        }
+
+        body::before {
+          content: '';
+          position: absolute;
+          width: 200%;
+          height: 200%;
+          background: radial-gradient(circle, rgba(218, 165, 32, 0.03) 1px, transparent 1px);
+          background-size: 50px 50px;
+          animation: moveBackground 20s linear infinite;
+        }
+
+        @keyframes moveBackground {
+          0% { transform: translate(0, 0); }
+          100% { transform: translate(50px, 50px); }
+        }
+
+        /* Cybersecurity background elements */
+        body::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-image:
+            linear-gradient(90deg, rgba(218, 165, 32, 0.03) 1px, transparent 1px),
+            linear-gradient(0deg, rgba(218, 165, 32, 0.03) 1px, transparent 1px);
+          background-size: 100px 100px;
+          pointer-events: none;
+        }
+
+        .cyber-element {
+          position: absolute;
+          color: rgba(218, 165, 32, 0.15);
+          font-family: 'Courier New', monospace;
+          font-size: 12px;
+          pointer-events: none;
+          animation: float 15s infinite ease-in-out;
+          z-index: 0;
+        }
+
+        .cyber-element:nth-child(1) {
+          top: 10%;
+          left: 5%;
+          animation-delay: 0s;
+        }
+
+        .cyber-element:nth-child(2) {
+          top: 70%;
+          left: 10%;
+          animation-delay: 2s;
+        }
+
+        .cyber-element:nth-child(3) {
+          top: 30%;
+          right: 8%;
+          animation-delay: 4s;
+        }
+
+        .cyber-element:nth-child(4) {
+          bottom: 15%;
+          right: 12%;
+          animation-delay: 1s;
+        }
+
+        .cyber-element:nth-child(5) {
+          top: 50%;
+          left: 15%;
+          animation-delay: 3s;
+        }
+
+        .cyber-element:nth-child(6) {
+          top: 20%;
+          right: 20%;
+          animation-delay: 5s;
+        }
+
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0) translateX(0);
+            opacity: 0.15;
+          }
+          50% {
+            transform: translateY(-20px) translateX(10px);
+            opacity: 0.25;
+          }
+        }
+
+        .lock-icon {
+          position: absolute;
+          width: 300px;
+          height: 300px;
+          opacity: 0.02;
+          pointer-events: none;
+          z-index: 0;
+        }
+
+        .lock-icon:nth-of-type(1) {
+          top: -50px;
+          right: -50px;
+          animation: rotate 30s linear infinite;
+        }
+
+        .lock-icon:nth-of-type(2) {
+          bottom: -50px;
+          left: -50px;
+          animation: rotate 40s linear infinite reverse;
+        }
+
+        @keyframes rotate {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+
+        .login-container {
+          width: 100%;
+          max-width: 420px;
+          padding: 40px;
+          border-radius: 16px;
+          background: rgba(26, 26, 46, 0.95);
+          backdrop-filter: blur(10px);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5),
+                      0 0 0 1px rgba(218, 165, 32, 0.1);
+          position: relative;
+          z-index: 1;
+          animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        h2 {
+          margin-top: 0;
+          margin-bottom: 30px;
+          color: #daa520;
+          font-size: 28px;
+          font-weight: 600;
+          text-align: center;
+          text-shadow: 0 0 20px rgba(218, 165, 32, 0.3);
+        }
+
+        .alert {
+          padding: 12px 16px;
+          border-radius: 8px;
+          margin-bottom: 20px;
+          font-size: 14px;
+          animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateX(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        .alert-error {
+          color: #ff6b6b;
+          background: rgba(255, 107, 107, 0.1);
+          border: 1px solid rgba(255, 107, 107, 0.3);
+        }
+
+        .alert-success {
+          color: #51cf66;
+          background: rgba(81, 207, 102, 0.1);
+          border: 1px solid rgba(81, 207, 102, 0.3);
+        }
+
+        form {
+          margin-bottom: 24px;
+        }
+
+        .input-group {
+          margin-bottom: 16px;
+          position: relative;
+        }
+
+        input {
+          width: 100%;
+          padding: 14px 16px;
+          border-radius: 8px;
+          border: 1px solid rgba(218, 165, 32, 0.2);
+          background: rgba(255, 255, 255, 0.05);
+          color: #ffffff;
+          font-size: 15px;
+          transition: all 0.3s ease;
+          outline: none;
+        }
+
+        input::placeholder {
+          color: rgba(255, 255, 255, 0.4);
+        }
+
+        input:focus {
+          border-color: #daa520;
+          background: rgba(255, 255, 255, 0.08);
+          box-shadow: 0 0 0 3px rgba(218, 165, 32, 0.1),
+                      0 0 20px rgba(218, 165, 32, 0.2);
+          transform: translateY(-2px);
+        }
+
+        .btn-primary {
+          width: 100%;
+          padding: 14px;
+          border-radius: 8px;
+          background: linear-gradient(135deg, #daa520 0%, #b8860b 100%);
+          color: #0a0a0a;
+          border: none;
+          font-size: 16px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          position: relative;
+          overflow: hidden;
+          box-shadow: 0 4px 15px rgba(218, 165, 32, 0.4);
+        }
+
+        .btn-primary::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 0;
+          height: 0;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.3);
+          transform: translate(-50%, -50%);
+          transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-primary:hover::before {
+          width: 300px;
+          height: 300px;
+        }
+
+        .btn-primary:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 25px rgba(218, 165, 32, 0.6),
+                      0 0 30px rgba(218, 165, 32, 0.4);
+        }
+
+        .btn-primary:active {
+          transform: translateY(0);
+        }
+
+        .divider {
+          text-align: center;
+          margin: 24px 0;
+          color: rgba(255, 255, 255, 0.4);
+          font-size: 14px;
+          position: relative;
+        }
+
+        .divider::before,
+        .divider::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          width: 40%;
+          height: 1px;
+          background: linear-gradient(to right, transparent, rgba(218, 165, 32, 0.3), transparent);
+        }
+
+        .divider::before {
+          left: 0;
+        }
+
+        .divider::after {
+          right: 0;
+        }
+
+        .sso-buttons {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .btn-sso {
+          display: block;
+          text-decoration: none;
+          padding: 14px;
+          border-radius: 8px;
+          text-align: center;
+          border: 1px solid rgba(218, 165, 32, 0.3);
+          background: rgba(218, 165, 32, 0.05);
+          color: #daa520;
+          font-size: 15px;
+          font-weight: 500;
+          transition: all 0.3s ease;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .btn-sso::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(218, 165, 32, 0.1), transparent);
+          transition: left 0.5s;
+        }
+
+        .btn-sso:hover::before {
+          left: 100%;
+        }
+
+        .btn-sso:hover {
+          border-color: #daa520;
+          background: rgba(218, 165, 32, 0.1);
+          transform: translateX(5px);
+          box-shadow: 0 4px 15px rgba(218, 165, 32, 0.2);
+        }
+
+        .register-link {
+          margin-top: 24px;
+          text-align: center;
+        }
+
+        .register-link a {
+          color: #daa520;
+          font-size: 14px;
+          text-decoration: none;
+          transition: all 0.3s ease;
+          position: relative;
+        }
+
+        .register-link a::after {
+          content: '';
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          width: 0;
+          height: 2px;
+          background: #daa520;
+          transition: width 0.3s ease;
+        }
+
+        .register-link a:hover::after {
+          width: 100%;
+        }
+
+        .register-link a:hover {
+          text-shadow: 0 0 10px rgba(218, 165, 32, 0.5);
+        }
+
+        @media (max-width: 480px) {
+          .login-container {
+            padding: 30px 20px;
+          }
+
+          h2 {
+            font-size: 24px;
+          }
+        }
+    </style>
+</head>
+<body>
+<!-- Cybersecurity themed background elements -->
+<svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.5">
+    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+</svg>
+<svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.5">
+    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+</svg>
+
+<div class="cyber-element">
+    &lt;encrypted&gt;<br/>
+    0x4A7F9E2B<br/>
+    0x8C3D1F5A<br/>
+    0x2E9B4C7D<br/>
+    &lt;/encrypted&gt;
+</div>
+<div class="cyber-element">
+    [AUTH] JWT<br/>
+    RSA-256<br/>
+    SECURE
+</div>
+<div class="cyber-element">
+    SHA-256:<br/>
+    a3f5c9d1...<br/>
+    [VERIFIED]
+</div>
+<div class="cyber-element">
+    SSL/TLS 1.3<br/>
+    HANDSHAKE OK<br/>
+    CIPHER: AES
+</div>
+<div class="cyber-element">
+    firewall: ON<br/>
+    IDS: ACTIVE<br/>
+    port: 443
+</div>
+<div class="cyber-element">
+    &lt;token&gt;<br/>
+    eyJhbGc...<br/>
+    &lt;/token&gt;
+</div>
+
+<div class="login-container">
+    <h2>Login</h2>
+
+    <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+    <div th:if="${param.error}" class="alert alert-error">Invalid username or password</div>
+    <div th:if="${param.logout}" class="alert alert-success">You have been logged out successfully.</div>
+    <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+
+    <form th:action="@{/login}" method="post">
+        <div class="input-group">
+            <input name="username" placeholder="Username" required/>
+        </div>
+        <div class="input-group">
+            <input name="password" type="password" placeholder="Password" required/>
+        </div>
+        <div>
+            <button type="submit" class="btn-primary">Login</button>
+        </div>
+    </form>
+
+    <div class="divider">OR</div>
+
+    <div class="sso-buttons">
+        <a href="/sso/login" class="btn-sso">Login with SSO (JWT)</a>
+        <a href="/sso/saml" class="btn-sso">Login with SSO (SAML)</a>
+        <a href="/oauth2/authorization/miniorange" class="btn-sso">Login with SSO (OIDC)</a>
+    </div>
+
+    <div class="register-link">
+        <a href="/register">Register here</a>
+    </div>
+</div>
+</body>
+</html>

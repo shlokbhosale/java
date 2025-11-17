@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit User</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 40px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 20px;
+        }
+
+        h2 {
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+            letter-spacing: 1px;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        form {
+            max-width: 400px;
+            margin: auto;
+            padding: 35px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 15px;
+            background: rgba(26, 26, 26, 0.9);
+            box-shadow: 0 8px 32px rgba(212, 175, 55, 0.15);
+            backdrop-filter: blur(10px);
+        }
+
+        label {
+            display: block;
+            color: #d4af37;
+            font-size: 0.9em;
+            margin-bottom: 6px;
+            margin-top: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            background: rgba(15, 15, 15, 0.8);
+            color: #e0e0e0;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #ffd700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+            background: rgba(20, 20, 20, 0.9);
+        }
+
+        input::placeholder {
+            color: rgba(212, 175, 55, 0.4);
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        select option {
+            background: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        button {
+            background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        a {
+            text-decoration: none;
+            color: #ffd700;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        a:hover {
+            color: #ffed4e;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        div[style*="text-align:center"] {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Edit User</h2>
+
+<form th:action="@{'/admin/update/' + ${user.id}}" th:object="${user}" method="post">
+    <input type="hidden" th:field="*{id}" />
+
+    <label>Username:</label>
+    <input type="text" th:field="*{username}" required />
+
+    <label>Password:</label>
+    <input type="password" th:field="*{password}" placeholder="Enter new password or keep existing" />
+
+    <label>Email:</label>
+    <input type="email" th:field="*{email}" />
+
+    <label>Role:</label>
+    <select th:field="*{role}">
+        <option value="USER">USER</option>
+        <option value="ADMIN">ADMIN</option>
+    </select>
+
+    <button type="submit">Update User</button>
+</form>
+
+<div style="text-align:center; margin-top:15px;">
+    <a href="/admin/dashboard">Back to Dashboard</a>
+</div>
+
+</body>
+</html>

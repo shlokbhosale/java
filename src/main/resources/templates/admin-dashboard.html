@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #d4af37;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #ffd700, #ffed4e, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+            letter-spacing: 2px;
+        }
+
+        a {
+            color: #ffd700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        a:hover {
+            color: #ffed4e;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        body > a {
+            display: inline-block;
+            background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
+            color: #000;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin: 0 auto 30px;
+            display: block;
+            width: fit-content;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            border: 2px solid #ffd700;
+        }
+
+        body > a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+            color: #000;
+        }
+
+        table {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: rgba(26, 26, 26, 0.8);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(212, 175, 55, 0.2);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        th {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #ffd700;
+            padding: 18px;
+            text-align: left;
+            font-size: 1.1em;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #d4af37;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+            color: #e0e0e0;
+        }
+
+        tr {
+            transition: all 0.3s ease;
+        }
+
+        tr:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: scale(1.01);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        td:first-child {
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        td a {
+            padding: 6px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            display: inline-block;
+            margin: 0 3px;
+        }
+
+        td a:first-child {
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid #d4af37;
+        }
+
+        td a:first-child:hover {
+            background: rgba(212, 175, 55, 0.3);
+        }
+
+        td a:last-child {
+            background: rgba(255, 69, 58, 0.2);
+            border: 1px solid #ff453a;
+            color: #ff6b6b;
+        }
+
+        td a:last-child:hover {
+            background: rgba(255, 69, 58, 0.3);
+            color: #ff8787;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                font-size: 0.9em;
+            }
+
+            h2 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h2>Admin Dashboard</h2>
+<a th:href="@{/admin/add}">Add New User</a>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Role</th>
+        <th>Action</th>
+    </tr>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.role}"></td>
+        <td>
+            <a th:href="@{'/admin/edit/' + ${user.id}}">Edit</a> |
+            <a th:href="@{'/admin/delete/' + ${user.id}}">Delete</a>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
